@@ -5,7 +5,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, body_sheet, hand_sheet, weapon_sheets, frame_counts):
         super().__init__()
         self.body_animations = self.load_sprites(body_sheet, frame_counts)
-        self.hand_animations = self.load_sprites(hand_sheet, frame_counts)
+        self.hand_animations = self.load_sprites(hand_sheet, frame_counts, is_column=True)
         # Assuming the same frame counts for body and hands; adjust if different
         self.weapon_animations = {weapon: self.load_sprites(sheet, frame_counts) for weapon, sheet in weapon_sheets.items()}
       
@@ -16,16 +16,23 @@ class Player(pygame.sprite.Sprite):
         self.image = None  # To be created in the render method
         self.rect = pygame.Rect(pos, (TILE_SIZE, TILE_SIZE))
 
-    def load_sprites(self, sprite_sheet, frame_counts):
+    def load_sprites(self, sprite_sheet, frame_counts, is_column=False):
         animations = {}
         sheet_width, sheet_height = sprite_sheet.get_size()
         print("Sprite sheet dimensions:", sheet_width, sheet_height)
 
         for row, (anim, num_frames) in enumerate(frame_counts.items()):
             animations[anim] = []
-            for col in range(num_frames):
-                x = col * TILE_SIZE
-                y = row * TILE_SIZE
+            for frame_index in range(num_frames):
+                if is_column:
+                    # For sprites arranged in a column, the y-coordinate changes, and the x-coordinate stays the same
+                    x = 0
+                    y = frame_index * TILE_SIZE
+                else:
+                    # For sprites arranged in rows, the x-coordinate changes, and the y-coordinate is based on the row
+                    x = frame_index * TILE_SIZE
+                    y = row * TILE_SIZE
+
                 print(f"Trying to extract {anim} frame at: ({x}, {y})")
                 frame = sprite_sheet.subsurface(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
                 animations[anim].append(frame)
