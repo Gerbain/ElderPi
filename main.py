@@ -1,22 +1,23 @@
-# main.py
 import pygame
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
 from player import Player
-from game_map import GameMap
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("Game Title")
     clock = pygame.time.Clock()
 
-    # Load sprites
-    floor_sprite = pygame.image.load('sprites/walls_0042_Layer-43.png').convert_alpha()
-    wall_sprite = pygame.image.load('sprites/walls_0042_Layer-43.png').convert_alpha()
-    sprite_sheet = pygame.image.load('sprites/sprite_oldman.png').convert_alpha()
+    # Load sprite sheets
+    body_sheet = pygame.image.load('path_to_body_sprite_sheet.png').convert_alpha()
+    hand_sheet = pygame.image.load('path_to_hand_sprite_sheet.png').convert_alpha()
+    weapon_sheets = {
+        'pistol': pygame.image.load('path_to_pistol_sprite_sheet.png').convert_alpha(),
+        # Add other weapons as needed
+    }
 
-    # Create instances of the Player and GameMap
-    player = Player((SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), sprite_sheet)
-    game_map = GameMap()
+    # Create Player instance
+    player = Player((SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), body_sheet, hand_sheet, weapon_sheets)
 
     running = True
     while running:
@@ -26,11 +27,14 @@ def main():
 
         keys = pygame.key.get_pressed()
         player.update(keys)
-        screen.fill((0, 0, 0))
-        game_map.draw(screen, floor_sprite, wall_sprite)
-        player.draw(screen)
-        pygame.display.flip()
-        clock.tick(FPS)
+
+        screen.fill((0, 0, 0))  # Clear the screen with black (or any other background)
+
+        player.render()  # Render the player
+        screen.blit(player.image, player.rect.topleft)  # Draw the player on the screen
+
+        pygame.display.flip()  # Update the display
+        clock.tick(FPS)  # Maintain the specified FPS
 
     pygame.quit()
 

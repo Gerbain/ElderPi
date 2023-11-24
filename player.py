@@ -1,29 +1,25 @@
-# player.py
-import pygame
-from settings import TILE_SIZE, CHARACTER_SPEED
-
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, sprite_sheet):
+    def __init__(self, pos, body_sheet, hand_sheet, weapon_sheets):
         super().__init__()
-        self.sprites = self.load_sprites(sprite_sheet)
-        self.current_sprite = self.sprites['idle'][0]
-        self.rect = self.current_sprite.get_rect(center=pos)
-        self.speed = CHARACTER_SPEED
-        self.direction = pygame.math.Vector2(0, 0)
+        self.body_animations = self.load_sprites(body_sheet, 6)  # Assuming 6 frames per animation
+        self.hand_animations = self.load_sprites(hand_sheet, 6)
+        self.weapon_animations = {weapon: self.load_sprites(sheet, 6) for weapon, sheet in weapon_sheets.items()}
 
-    def load_sprites(self, sprite_sheet):
-        animations = {
-            'idle': [],
-            'walk': []
-        }
-        col_offset = 1  # Offset due to the first column being blank
+        self.current_weapon = 'pistol'  # Example weapon
+        self.current_animation = 'idle'
+        self.frame_index = 0
 
+        self.image = None  # To be created in the render method
+        self.rect = pygame.Rect(pos, (TILE_SIZE, TILE_SIZE))
+
+    def load_sprites(self, sprite_sheet, num_frames):
+        animations = {'idle': [], 'walk': [], 'death': []}
         for row, anim in enumerate(animations.keys()):
-            for col in range(4):  # Assuming 4 frames per animation
-                frame = sprite_sheet.subsurface(pygame.Rect((col + col_offset) * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE))
+            for col in range(num_frames):  # Assuming 6 frames per animation
+                frame = sprite_sheet.subsurface(pygame.Rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE))
                 animations[anim].append(frame)
-
         return animations
+
 
     def update(self, keys):
         self.direction.x, self.direction.y = 0, 0  # Reset movement direction
@@ -38,16 +34,19 @@ class Player(pygame.sprite.Sprite):
         elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.direction.y = 1
 
-        # Normalize direction vector to ensure consistent speed diagonally
         if self.direction.length() > 0:
             self.direction = self.direction.normalize()
+            self.current_animation = 'walk'
+        else:
+            self.current_animation = 'idle'
 
-        # Update position
         self.rect.x += self.direction.x * self.speed
         self.rect.y += self.direction.y * self.speed
 
-        # Update animation
-        # Add logic here to switch between 'idle' and 'walk' animations based on movement
+        # Update the frame index
+        self.frame_index = (self.frame_index + 1) % len(self.body_animations[self.current_animation])
 
-    def draw(self, screen):
-        screen.blit(self.current_sprite, self.rect.topleft)
+
+    def render(self):
+        # Create a composite image of the character, hands, and weapon
+        pass
