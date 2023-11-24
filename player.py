@@ -15,17 +15,17 @@ class Player(pygame.sprite.Sprite):
         self.image = None  # To be created in the render method
         self.rect = pygame.Rect(pos, (TILE_SIZE, TILE_SIZE))
 
-    def load_sprites(self, sprite_sheet, num_frames):
-        animations = {'idle': [], 'walk': [], 'death': []}
-        sheet_width, sheet_height = sprite_sheet.get_size()
-        print("Sprite sheet dimensions:", sheet_width, sheet_height)
-
-        for row, anim in enumerate(animations.keys()):
+    def load_sprites(self, sprite_sheet, frame_counts):
+        animations = {}
+        row = 0
+        for anim, num_frames in frame_counts.items():
+            animations[anim] = []
             for col in range(num_frames):
-                print("Trying to extract frame at:", col * TILE_SIZE, row * TILE_SIZE)
                 frame = sprite_sheet.subsurface(pygame.Rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE))
                 animations[anim].append(frame)
+            row += 1  # Move to the next row for the next animation
         return animations
+
 
 
     def update(self, keys):

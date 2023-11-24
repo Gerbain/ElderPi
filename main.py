@@ -16,8 +16,14 @@ def main():
         # Add other weapons as needed
     }
 
-    # Create Player instance
-    player = Player((SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), body_sheet, hand_sheet, weapon_sheets)
+    # Assuming the body_sheet is for the player character
+    frame_counts = {
+        'idle': 4,
+        'walk': 6,
+        'death': 6  # Update this with the correct number of frames for the death animation
+    }
+
+    player = Player((SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), body_sheet, hand_sheet, weapon_sheets, frame_counts)
 
     running = True
     while running:
