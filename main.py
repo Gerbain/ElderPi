@@ -9,10 +9,10 @@ def main():
     clock = pygame.time.Clock()
 
     # Load sprite sheets
-    body_sheet = pygame.image.load('sprites\Heroes\Rogue\Idle_sheet.png').convert_alpha()
-    hand_sheet = pygame.image.load('sprites\Weapons\Hands\Hands.png').convert_alpha()
+    body_sheet = pygame.image.load('sprites/Heroes/Rogue/Idle_sheet.png').convert_alpha()
+    hand_sheet = pygame.image.load('sprites/Weapons/Hands/Hands.png').convert_alpha()
     weapon_sheets = {
-        'pistol': pygame.image.load('sprites\Weapons\Hands\Hands.png').convert_alpha(),
+        'pistol': pygame.image.load('sprites/Weapons/Hands/Hands.png').convert_alpha(),
         # Add other weapons as needed
     }
 
