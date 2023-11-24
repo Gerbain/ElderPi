@@ -16,10 +16,11 @@ class Player(pygame.sprite.Sprite):
             'idle': [],
             'walk': []
         }
+        col_offset = 1  # Offset due to the first column being blank
 
         for row, anim in enumerate(animations.keys()):
             for col in range(4):  # Assuming 4 frames per animation
-                frame = sprite_sheet.subsurface(pygame.Rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE))
+                frame = sprite_sheet.subsurface(pygame.Rect((col + col_offset) * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE))
                 animations[anim].append(frame)
 
         return animations
@@ -46,7 +47,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += self.direction.y * self.speed
 
         # Update animation
-        # You can add logic here to switch between 'idle' and 'walk' animations based on movement
+        # Add logic here to switch between 'idle' and 'walk' animations based on movement
 
     def draw(self, screen):
         screen.blit(self.current_sprite, self.rect.topleft)
