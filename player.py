@@ -2,12 +2,13 @@ import pygame
 from settings import TILE_SIZE, CHARACTER_SPEED
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, body_sheet, hand_sheet, weapon_sheets):
+    def __init__(self, pos, body_sheet, hand_sheet, weapon_sheets, frame_counts):
         super().__init__()
-        self.body_animations = self.load_sprites(body_sheet, 6)  # Assuming 6 frames per animation
-        self.hand_animations = self.load_sprites(hand_sheet, 6)
-        self.weapon_animations = {weapon: self.load_sprites(sheet, 6) for weapon, sheet in weapon_sheets.items()}
-
+        self.body_animations = self.load_sprites(body_sheet, frame_counts)
+        self.hand_animations = self.load_sprites(hand_sheet, frame_counts)
+        # Assuming the same frame counts for body and hands; adjust if different
+        self.weapon_animations = {weapon: self.load_sprites(sheet, frame_counts) for weapon, sheet in weapon_sheets.items()}
+      
         self.current_weapon = 'pistol'  # Example weapon
         self.current_animation = 'idle'
         self.frame_index = 0
