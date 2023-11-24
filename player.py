@@ -18,16 +18,18 @@ class Player(pygame.sprite.Sprite):
 
     def load_sprites(self, sprite_sheet, frame_counts):
         animations = {}
-        row = 0
-        for anim, num_frames in frame_counts.items():
+        sheet_width, sheet_height = sprite_sheet.get_size()
+        print("Sprite sheet dimensions:", sheet_width, sheet_height)
+
+        for row, (anim, num_frames) in enumerate(frame_counts.items()):
             animations[anim] = []
             for col in range(num_frames):
-                frame = sprite_sheet.subsurface(pygame.Rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE))
+                x = col * TILE_SIZE
+                y = row * TILE_SIZE
+                print(f"Trying to extract {anim} frame at: ({x}, {y})")
+                frame = sprite_sheet.subsurface(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
                 animations[anim].append(frame)
-            row += 1  # Move to the next row for the next animation
         return animations
-
-
 
     def update(self, keys):
         self.direction.x, self.direction.y = 0, 0  # Reset movement direction
