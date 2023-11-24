@@ -10,8 +10,8 @@ def main():
     clock = pygame.time.Clock()
 
     # Load sprites
-    floor_sprite = pygame.image.load('sprites/walls_0042_Layer-43').convert_alpha()
-    wall_sprite = pygame.image.load('sprites/walls_0042_Layer-43').convert_alpha()
+    floor_sprite = pygame.image.load('sprites/walls_0042_Layer-43.png').convert_alpha()
+    wall_sprite = pygame.image.load('sprites/walls_0042_Layer-43.png').convert_alpha()
     sprite_sheet = pygame.image.load('sprites/sprite_oldman.png').convert_alpha()
 
     # Create instances of the Player and GameMap
