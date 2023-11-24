@@ -1,3 +1,6 @@
+import pygame
+from settings import TILE_SIZE, CHARACTER_SPEED
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, body_sheet, hand_sheet, weapon_sheets):
         super().__init__()
@@ -48,5 +51,12 @@ class Player(pygame.sprite.Sprite):
 
 
     def render(self):
-        # Create a composite image of the character, hands, and weapon
-        pass
+        body_frame = self.body_animations[self.current_animation][self.frame_index]
+        hand_frame = self.hand_animations[self.current_animation][self.frame_index]
+        weapon_frame = self.weapon_animations[self.current_weapon][self.current_animation][self.frame_index]
+
+        self.image = pygame.Surface((TILE_SIZE, TILE_SIZE), pygame.SRCALPHA)
+        self.image.blit(body_frame, (0, 0))
+        self.image.blit(hand_frame, (0, 0))  # Adjust these coordinates if needed
+        self.image.blit(weapon_frame, (0, 0))  # Adjust these coordinates if needed
+
